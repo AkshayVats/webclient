@@ -1,0 +1,27 @@
+{
+  "name": "csharp-webclient",
+  "version": "1.0.0",
+  "description": "node js equivalent of C# WebClient class. Provides dummy download operations over http and https.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkshayVats/webclient.git"
+  },
+  "keywords": [
+    "C#",
+    "webclient",
+    "download",
+    "file",
+    "http",
+    "https"
+  ],
+  "author": "akshayvats",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AkshayVats/webclient/issues"
+  },
+  "homepage": "https://github.com/AkshayVats/webclient#readme"
+}
