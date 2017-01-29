@@ -2,6 +2,7 @@
 
 const http = require('http')
 const https = require('https')
+const fs = require('fs')
 
 function webclient() {
   
@@ -9,13 +10,33 @@ function webclient() {
 webclient.prototype.downloadString = function(opts) {
 	var response = "";
 	download(opts.url, {
+		gotResponse: function(response) {
+			response.setEncoding('utf8');
+		},
 		data: function(chunk) {
-			response += chunk;
+			response += String(chunk);
 		},
 		end: function() {
 			opts.done(response);
 		},
 		error: function(obj) {
+			opts.error(obj);
+		}
+	});
+}
+
+webclient.prototype.downloadFile = function(opts) {
+	var file = fs.createWriteStream(opts.path);
+	download(opts.url, {
+		data: function(chunk) {
+			file.write(chunk);
+		},
+		end: function() {
+			file.end();
+			opts.done();
+		},
+		error: function(obj) {
+			file.end();
 			opts.error(obj);
 		}
 	});
@@ -27,9 +48,9 @@ function download(url, cb) {
         http_or_https = https;
     }
     http_or_https.get(url, function(response) {
-        var headers = JSON.stringify(response.headers);
         switch(response.statusCode) {
             case 200:
+            	if(cb.gotResponse) cb.gotResponse(response);
                 response.on('data', function(chunk){
                     cb.data(chunk);
                 }).on('end', function(){
